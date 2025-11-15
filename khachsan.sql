@@ -1,0 +1,181 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th10 15, 2025 lúc 03:04 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Cơ sở dữ liệu: `khachsan`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `datphong`
+--
+
+CREATE TABLE `datphong` (
+  `madp` int(11) NOT NULL,
+  `makhs` int(11) DEFAULT NULL,
+  `maphong` int(11) DEFAULT NULL,
+  `ngaynhan` date DEFAULT NULL,
+  `ngaytra` date DEFAULT NULL,
+  `trangthai_dat` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `hoadon`
+--
+
+CREATE TABLE `hoadon` (
+  `mahd` int(11) NOT NULL,
+  `madp` int(11) DEFAULT NULL,
+  `maql` int(11) DEFAULT NULL,
+  `ngaylaphd` datetime DEFAULT NULL,
+  `tongtien` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `khachhang`
+--
+
+CREATE TABLE `khachhang` (
+  `makhs` int(11) NOT NULL,
+  `hoten` varchar(150) NOT NULL,
+  `diachi` varchar(255) DEFAULT NULL,
+  `sdt` varchar(15) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `user` varchar(50) DEFAULT NULL,
+  `matkhau` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `khachsan_info`
+--
+
+CREATE TABLE `khachsan_info` (
+  `makhs` int(11) NOT NULL,
+  `tenks` varchar(100) NOT NULL,
+  `diachi` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `phong`
+--
+
+CREATE TABLE `phong` (
+  `maphong` int(11) NOT NULL,
+  `sophong` varchar(10) NOT NULL,
+  `giaphong` decimal(10,2) DEFAULT NULL,
+  `loaiphong` varchar(50) DEFAULT NULL,
+  `trangthai` varchar(50) DEFAULT NULL,
+  `makhs` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `quanly`
+--
+
+CREATE TABLE `quanly` (
+  `maql` int(11) NOT NULL,
+  `hoten` varchar(150) NOT NULL,
+  `diachi` varchar(255) DEFAULT NULL,
+  `sdt` varchar(15) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `user` varchar(50) DEFAULT NULL,
+  `matkhau` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `datphong`
+--
+ALTER TABLE `datphong`
+  ADD PRIMARY KEY (`madp`),
+  ADD KEY `makh` (`makhs`),
+  ADD KEY `maphong` (`maphong`);
+
+--
+-- Chỉ mục cho bảng `hoadon`
+--
+ALTER TABLE `hoadon`
+  ADD PRIMARY KEY (`mahd`),
+  ADD KEY `madp` (`madp`),
+  ADD KEY `maql` (`maql`);
+
+--
+-- Chỉ mục cho bảng `khachhang`
+--
+ALTER TABLE `khachhang`
+  ADD PRIMARY KEY (`makhs`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `user` (`user`);
+
+--
+-- Chỉ mục cho bảng `khachsan_info`
+--
+ALTER TABLE `khachsan_info`
+  ADD PRIMARY KEY (`makhs`);
+
+--
+-- Chỉ mục cho bảng `phong`
+--
+ALTER TABLE `phong`
+  ADD PRIMARY KEY (`maphong`);
+
+--
+-- Chỉ mục cho bảng `quanly`
+--
+ALTER TABLE `quanly`
+  ADD PRIMARY KEY (`maql`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `user` (`user`);
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `datphong`
+--
+ALTER TABLE `datphong`
+  ADD CONSTRAINT `datphong_ibfk_1` FOREIGN KEY (`makhs`) REFERENCES `khachhang` (`makhs`),
+  ADD CONSTRAINT `datphong_ibfk_2` FOREIGN KEY (`maphong`) REFERENCES `phong` (`maphong`);
+
+--
+-- Các ràng buộc cho bảng `hoadon`
+--
+ALTER TABLE `hoadon`
+  ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`madp`) REFERENCES `datphong` (`madp`),
+  ADD CONSTRAINT `hoadon_ibfk_2` FOREIGN KEY (`maql`) REFERENCES `quanly` (`maql`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
