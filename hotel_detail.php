@@ -25,8 +25,9 @@ if ($conn->connect_error) {
     if ($makhs > 0) {
         // --------------------------------------------------------
         // 1. LẤY THÔNG TIN KHÁCH SẠN (khachsan_info)
+        // ĐÃ THÊM: mo_ta_chi_tiet
         // --------------------------------------------------------
-        $stmt_info = $conn->prepare("SELECT tenks, diachi FROM khachsan_info WHERE makhs = ?");
+        $stmt_info = $conn->prepare("SELECT tenks, diachi, mo_ta_chi_tiet FROM khachsan_info WHERE makhs = ?");
         if ($stmt_info) {
             $stmt_info->bind_param("i", $makhs);
             $stmt_info->execute();
@@ -60,10 +61,9 @@ if ($conn->connect_error) {
             
             // --------------------------------------------------------
             // 3. LẤY THÔNG TIN PHÒNG (phong)
-            // LƯU Ý: Giả định bảng 'phong' có cột 'makhs' để liên kết với khách sạn. 
-            // Nếu không có, bạn cần điều chỉnh CSDL hoặc query này.
+            // ĐÃ CẬP NHẬT: tenphong -> sophong, THÊM: trangthai
             // --------------------------------------------------------
-            $sql_rooms = "SELECT maphong, tenphong, loaiphong, giaphong 
+            $sql_rooms = "SELECT maphong, sophong, loaiphong, giaphong, trangthai 
                           FROM phong 
                           -- ĐÃ GIẢ ĐỊNH CỘT makhs TỒN TẠI TRONG BẢNG PHONG
                           WHERE makhs = ? 
@@ -96,7 +96,6 @@ if ($conn->connect_error) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi Tiết Khách Sạn: <?= $hotel_info ? htmlspecialchars($hotel_info['tenks']) : 'Đang tải...' ?></title>
-    <!-- Tải Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -153,14 +152,12 @@ if ($conn->connect_error) {
     </div>
 
     <div class="container">
-        <!-- PHẦN THÔNG BÁO LỖI -->
         <?php if (!empty($error_message)): ?>
             <div class="card bg-red-100 text-red-700 border border-red-300 mb-6" role="alert">
                 <i class="fas fa-exclamation-triangle mr-2"></i> <?= htmlspecialchars($error_message) ?>
             </div>
         <?php endif; ?>
 
-        <!-- PHẦN THÔNG TIN CHI TIẾT -->
         <?php if ($hotel_info): ?>
             <header class="mb-8">
                 <h1 class="text-5xl font-extrabold text-gray-900 mb-2">
@@ -176,7 +173,13 @@ if ($conn->connect_error) {
                 </span>
             </header>
 
-            <!-- GALLERY ẢNH -->
+            <div class="card mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4"><i class="fas fa-info-circle mr-2 text-blue-500"></i> Mô Tả Chi Tiết</h2>
+                <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    <?= nl2br(htmlspecialchars($hotel_info['mo_ta_chi_tiet'])) ?>
+                </div>
+            </div>
+
             <div class="mb-10">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4"><i class="fas fa-images mr-2 text-teal-500"></i> Thư viện ảnh (<?= count($hotel_images) ?>)</h2>
                 <?php if (count($hotel_images) > 0): ?>
@@ -210,7 +213,6 @@ if ($conn->connect_error) {
                 <?php endif; ?>
             </div>
 
-            <!-- PHẦN DANH SÁCH PHÒNG -->
             <div class="card">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2"><i class="fas fa-bed mr-2 text-indigo-500"></i> Danh Sách Các Loại Phòng</h2>
                 
@@ -219,9 +221,19 @@ if ($conn->connect_error) {
                         <?php foreach ($hotel_rooms as $room): ?>
                             <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-indigo-50 rounded-xl border border-indigo-200 hover:shadow-lg transition duration-200">
                                 <div class="flex-1 mb-2 md:mb-0">
-                                    <p class="text-lg font-bold text-indigo-800"><?= htmlspecialchars($room['tenphong']) ?></p>
+                                    <p class="text-lg font-bold text-indigo-800">Phòng số: <?= htmlspecialchars($room['sophong']) ?></p>
                                     <p class="text-sm text-gray-600">Mã Phòng: <?= htmlspecialchars($room['maphong']) ?> | Loại: <?= htmlspecialchars($room['loaiphong']) ?></p>
-                                </div>
+                                    
+                                    <p class="text-sm mt-1">
+                                        Trạng thái: 
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            <?php if ($room['trangthai'] == 1) echo 'bg-green-100 text-green-800'; 
+                                                  elseif ($room['trangthai'] == 0) echo 'bg-red-100 text-red-800';
+                                                  else echo 'bg-yellow-100 text-yellow-800'; ?>">
+                                            <?= $room['trangthai'] == 1 ? 'Sẵn sàng (1)' : ($room['trangthai'] == 0 ? 'Bận (0)' : 'Bảo trì (2)') ?>
+                                        </span>
+                                    </p>
+                                    </div>
                                 <div class="text-right">
                                     <p class="text-2xl font-extrabold text-green-600">
                                         <?= number_format($room['giaphong'], 0, ',', '.') ?> VNĐ
@@ -243,7 +255,6 @@ if ($conn->connect_error) {
 
         <?php endif; ?>
 
-        <!-- Nút quay lại chỉ hiện khi có lỗi hoặc thông tin KS không hợp lệ -->
         <?php if (!$hotel_info && !empty($error_message)): ?>
             <div class="text-center mt-8">
                 <a href="index.php" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-150 transform hover:scale-105">

@@ -99,7 +99,7 @@ if ($db_connected && $conn) {
             transition: color 0.2s;
         }
         .footer-links a:hover {
-            color: white;
+            color: black;
         }
     </style>
 </head>
@@ -163,8 +163,9 @@ if ($db_connected && $conn) {
                             
                             <div class="flex justify-between items-center mt-3">
                                 <span class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full">Tuyệt vời (8.5)</span>
-                                <a href="hotel_detail.php" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-150 shadow-md">
-                                    Xem chi tiết
+                                <a href="hotel_detail.php?makhs=<?= $hotel['makhs'] ?>" 
+                                   class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-md flex items-center">
+                                    Xem Chi Tiết <i class="fas fa-arrow-right ml-2"></i>
                                 </a>
                             </div>
                         </div>
