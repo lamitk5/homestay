@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 15, 2025 lúc 05:02 PM
+-- Thời gian đã tạo: Th10 21, 2025 lúc 11:02 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -84,10 +84,7 @@ CREATE TABLE `khachsan_images` (
 --
 
 INSERT INTO `khachsan_images` (`image_id`, `makhs`, `image_path`, `is_primary`) VALUES
-(1, 5, '1763220776_5_0_⚝•.jpg', 0),
-(2, 5, '1763220776_5_1_Anime wallpaper.jpg', 0),
-(5, 9, '1763221254_9_0_⚝•.jpg', 0),
-(6, 9, '1763221254_9_1_Anime wallpaper.jpg', 0);
+(1, 1, '1763718803_1_0_⚝•.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -98,17 +95,16 @@ INSERT INTO `khachsan_images` (`image_id`, `makhs`, `image_path`, `is_primary`) 
 CREATE TABLE `khachsan_info` (
   `makhs` int(11) NOT NULL,
   `tenks` varchar(100) NOT NULL,
-  `diachi` varchar(255) DEFAULT NULL
+  `diachi` varchar(255) DEFAULT NULL,
+  `mo_ta_chi_tiet` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `khachsan_info`
 --
 
-INSERT INTO `khachsan_info` (`makhs`, `tenks`, `diachi`) VALUES
-(1, 'hao', 'hn'),
-(5, 'Hoàng Hà', 'Hà Nội'),
-(9, 'hoàng sa', 'hcm');
+INSERT INTO `khachsan_info` (`makhs`, `tenks`, `diachi`, `mo_ta_chi_tiet`) VALUES
+(1, 'ter', 'Hà Nội', 'gegegegseg');
 
 -- --------------------------------------------------------
 
@@ -130,7 +126,8 @@ CREATE TABLE `phong` (
 --
 
 INSERT INTO `phong` (`maphong`, `sophong`, `giaphong`, `loaiphong`, `trangthai`, `makhs`) VALUES
-(0, '3', 44444.00, 'Standard', '1', 0);
+(1, '3', 44444.00, 'Standard', '1', 0),
+(2, '3', 100000.00, 'Deluxe', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -211,13 +208,19 @@ ALTER TABLE `quanly`
 -- AUTO_INCREMENT cho bảng `khachsan_images`
 --
 ALTER TABLE `khachsan_images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `khachsan_info`
 --
 ALTER TABLE `khachsan_info`
-  MODIFY `makhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `makhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `phong`
+--
+ALTER TABLE `phong`
+  MODIFY `maphong` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
