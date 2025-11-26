@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 21, 2025 lúc 11:02 AM
+-- Thời gian đã tạo: Th10 26, 2025 lúc 02:41 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `datphong` (
   `madp` int(11) NOT NULL,
-  `makhs` int(11) DEFAULT NULL,
+  `makh` int(11) DEFAULT NULL,
   `maphong` int(11) DEFAULT NULL,
   `ngaynhan` date DEFAULT NULL,
   `ngaytra` date DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `hoadon` (
 --
 
 CREATE TABLE `khachhang` (
-  `makhs` int(11) NOT NULL,
+  `makh` int(11) NOT NULL,
   `hoten` varchar(150) NOT NULL,
   `diachi` varchar(255) DEFAULT NULL,
   `sdt` varchar(15) DEFAULT NULL,
@@ -65,6 +65,13 @@ CREATE TABLE `khachhang` (
   `user` varchar(50) DEFAULT NULL,
   `matkhau` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `khachhang`
+--
+
+INSERT INTO `khachhang` (`makh`, `hoten`, `diachi`, `sdt`, `email`, `user`, `matkhau`) VALUES
+(1, 'lâm cout', 'sơn tây', '0373654414', 'lamc6250@gmail.com', 'lamc6250', '$2y$10$UJrBIUSqLfmtjUGmB5egIuqjwwWnVrwPOB1.sVtjSSUS3Wfy1nQHm');
 
 -- --------------------------------------------------------
 
@@ -154,7 +161,7 @@ CREATE TABLE `quanly` (
 --
 ALTER TABLE `datphong`
   ADD PRIMARY KEY (`madp`),
-  ADD KEY `makh` (`makhs`),
+  ADD KEY `makh` (`makh`),
   ADD KEY `maphong` (`maphong`);
 
 --
@@ -169,7 +176,7 @@ ALTER TABLE `hoadon`
 -- Chỉ mục cho bảng `khachhang`
 --
 ALTER TABLE `khachhang`
-  ADD PRIMARY KEY (`makhs`),
+  ADD PRIMARY KEY (`makh`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `user` (`user`);
 
@@ -205,6 +212,12 @@ ALTER TABLE `quanly`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `khachhang`
+--
+ALTER TABLE `khachhang`
+  MODIFY `makh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT cho bảng `khachsan_images`
 --
 ALTER TABLE `khachsan_images`
@@ -230,7 +243,7 @@ ALTER TABLE `phong`
 -- Các ràng buộc cho bảng `datphong`
 --
 ALTER TABLE `datphong`
-  ADD CONSTRAINT `datphong_ibfk_1` FOREIGN KEY (`makhs`) REFERENCES `khachhang` (`makhs`),
+  ADD CONSTRAINT `datphong_ibfk_1` FOREIGN KEY (`makh`) REFERENCES `khachhang` (`makh`),
   ADD CONSTRAINT `datphong_ibfk_2` FOREIGN KEY (`maphong`) REFERENCES `phong` (`maphong`);
 
 --
