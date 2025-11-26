@@ -380,7 +380,7 @@ $conn->close();
 </head>
 <body class="bg-gray-100 font-sans p-6">
     <div class="fixed bottom-6 right-6 z-10">
-        <a href="index.php" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl transition duration-300 transform hover:scale-105 flex items-center">
+        <a href="index(1).php" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl transition duration-300 transform hover:scale-105 flex items-center">
             <i class="fas fa-home mr-2"></i> Trở về Trang Chủ
         </a>
     </div>
