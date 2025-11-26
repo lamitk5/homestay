@@ -295,8 +295,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 // --------------------------------------------------------
     // --- Xử lý XÓA PHÒNG ĐƠN LẺ (RESET maphong) ---
     // --------------------------------------------------------
-    elseif ($action == 'delete_room' && isset($_POST['MaPhong'])) {
-        $maphong = (int)$_POST['MaPhong'];
+    elseif ($action == 'delete_room' && isset($_POST['maphong'])) {
+        $maphong = (int)$_POST['maphong'];
 
         // 1. Xóa bản ghi phòng
         $sql_delete = "DELETE FROM phong WHERE maphong = ?";
