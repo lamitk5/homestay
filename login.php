@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     <?php endif; ?>
 
-                    <form id="loginForm" method="POST" action="login.php" class="space-y-6">
+                    <form id="loginForm" method="POST" action="login_khachhang.php" class="space-y-6">
                         
                         <div>
                             <label for="username" class="flex items-center text-sm font-medium text-gray-700 mb-1">Tên đăng nhập hoặc Email</label>
@@ -168,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="mt-4 text-center">
                         <p class="text-sm text-gray-600">
                             Chưa có tài khoản? 
-                            <a href="register.php" class="text-blue-600 font-semibold hover:text-blue-800 transition">Đăng ký ngay</a>
+                            <a href="register_khachhang.php" class="text-blue-600 font-semibold hover:text-blue-800 transition">Đăng ký ngay</a>
                         </p>
                     </div>
                 </div>
