@@ -1,12 +1,9 @@
 <?php
-// Bắt đầu phiên làm việc. Cần thiết để kiểm tra trạng thái đăng nhập.
-session_start(); 
-
 // CẤU HÌNH DATABASE
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "khachsan"; 
+$dbname = "khachsan"; // Tên database chính xác
 error_reporting(E_ALL); // Bật báo cáo lỗi để dễ debug
 
 // Mở kết nối
@@ -22,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 // --------------------------------------------------------
-// --- PHẦN TRUY VẤN DỮ LIỆU ĐỂ HIỂN THỊ --
+// --- PHẦN TRUY VẤN DỮ LIỆU ĐỂ HIỂN THỊ ---
 // --------------------------------------------------------
 
 $hotels = [];
@@ -50,20 +47,10 @@ $message = "";
 if (isset($_GET['msg'])) {
     $message = htmlspecialchars($_GET['msg']);
 }
-if (isset($_GET['login']) && $_GET['login'] == 'success' && isset($_SESSION['hoten'])) {
-    $message = "Đăng nhập thành công! Chào mừng, " . htmlspecialchars($_SESSION['hoten']) . ".";
-}
-if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
-    $message = "Bạn đã đăng xuất thành công.";
-}
-
 
 if ($db_connected && $conn) {
     $conn->close();
 }
-
-// Kiểm tra trạng thái đăng nhập
-$is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
 
 ?>
 <!DOCTYPE html>
@@ -118,35 +105,17 @@ $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
 </head>
 <body>
 
-    <!-- PHẦN CỐ ĐỊNH CHỨC NĂNG QUẢN LÝ VÀ TRẠNG THÁI NGƯỜI DÙNG -->
-    <div class="fixed bottom-6 right-6 z-10 space-y-3">
-        <?php if ($is_logged_in): ?>
-             <a href="logout.php" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl transition duration-300 transform hover:scale-105 flex items-center">
-                <i class="fas fa-sign-out-alt mr-2"></i> Đăng Xuất
-            </a>
-        <?php else: ?>
-            <a href="register_khachhang.php" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl transition duration-300 transform hover:scale-105 flex items-center">
-                <i class="fas fa-user-plus mr-2"></i> Đăng Ký
-            </a>
-            <a href="login_khachhang.php" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl transition duration-300 transform hover:scale-105 flex items-center">
-                <i class="fas fa-sign-in-alt mr-2"></i> Đăng Nhập
-            </a>
-        <?php endif; ?>
-        
+    <div class="fixed bottom-6 right-6 z-10">
+        <a href="manage.php" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl transition duration-300 transform hover:scale-105 flex items-center">
+            <i class="fas fa-tools mr-2"></i> Chức năng Quản Lý (CRUD)
+        </a>
+    </div>
+
     <header class="header">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center">
-                <h1 class="text-3xl font-bold">Booking.com (Khách Hàng)</h1>
-                <div class="flex space-x-4 items-center">
-                    <?php if ($is_logged_in): ?>
-                        <span class="text-yellow-400 font-semibold text-lg">
-                            <i class="fas fa-user-circle mr-2"></i>Chào, <?= htmlspecialchars($_SESSION['hoten']) ?>
-                        </span>
-                    <?php else: ?>
-                        <a href="login_khachhang.php" class="text-white hover:text-yellow-400 font-semibold">
-                            Đăng nhập/Đăng ký
-                        </a>
-                    <?php endif; ?>
+                <h1 class="text-3xl font-bold">Booking.com (Mô Phỏng)</h1>
+                <div class="flex space-x-4">
                     <button class="text-white hover:text-yellow-400">VND</button>
                     <button class="text-white hover:text-yellow-400"><i class="fas fa-question-circle"></i> Trợ giúp</button>
                 </div>
@@ -168,8 +137,8 @@ $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
     <main class="main-content">
         <?php if (!empty($message)): ?>
             <div class="p-4 mb-6 text-base text-white rounded-lg max-w-7xl mx-auto 
-                <?php if (strpos($message, 'thành công') !== false || strpos($message, 'Chào mừng') !== false) echo 'bg-green-500'; else echo 'bg-red-500'; ?>" role="alert">
-                <?= $message ?>
+                <?php if (strpos($message, 'Lỗi') !== false) echo 'bg-red-500'; else echo 'bg-green-500'; ?>" role="alert">
+                <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
 
@@ -205,7 +174,7 @@ $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
             <?php else: ?>
                 <div class="col-span-3 bg-yellow-100 p-8 rounded-xl text-center text-gray-700 border border-yellow-300">
                     <p class="font-bold text-xl mb-3">Chưa có khách sạn nào được hiển thị!</p>
-                    <p>Vui lòng chuyển sang <a href="manage.php" class="text-blue-600 underline font-semibold hover:text-blue-800 transition">Trang Quản Lý</a> để thêm dữ liệu mới.</p>
+                    <p>Vui lòng chuyển sang <a href="suahome.php" class="text-blue-600 underline font-semibold hover:text-blue-800 transition">Trang Quản Lý</a> để thêm dữ liệu mới.</p>
                 </div>
             <?php endif; ?>
         </div>
@@ -224,8 +193,9 @@ $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
 
     <footer class="footer">
         <div class="max-w-7xl mx-auto px-4">
-            <p class="text-center text-xs mt-10 pt-5 border-t border-gray-700">© 2025 Booking.com. Đã đăng ký bản quyền. Giao diện mô phỏng.</p>
+            <p class="text-center text-xs mt-10 pt-5 border-t border-gray-700">© 2024 Booking.com. Đã đăng ký bản quyền. Giao diện mô phỏng.</p>
         </div>
     </footer>
 </body>
 </html>
+
